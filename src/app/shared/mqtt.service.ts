@@ -13,6 +13,7 @@ export interface ConnectionConfig {
   username?: string;
   password?: string;
   protocol?: 'ws' | 'wss' | 'mqtt' | 'mqtts';
+  protocolVersion?: number
 }
 
 @Injectable({
@@ -37,7 +38,7 @@ export class MqttService {
     // Build connection URL based on protocol
     const protocol = config.protocol || 'ws';
     console.log('Connecting using protocol:', protocol);
-    const url = `${protocol}://${config.hostname}:${config.port}${config.path || '/mqtt'}`;
+    const url = `${protocol}://${config.hostname}:${config.port}${config.path}`;
 
     const options: IClientOptions = {
       clientId: config.clientId || `angular_client_${Math.random().toString(16).substring(2, 10)}`,
@@ -128,7 +129,7 @@ export class MqttService {
     }
 
     topics.forEach(topic => {
-      this.client!.subscribe(topic, (err) => {
+      this.client!.subscribe(topic, { qos: 1 }, (err) => {
         if (err) {
           console.error(`Failed to subscribe to topic ${topic}:`, err);
         } else {

@@ -16,6 +16,9 @@ export interface RobotConfig {
   clientId: string;
   username: string;
   token: string;
+  mqtt_hostname: string;
+  mqtt_port: number;
+  mqtt_sub_topic: string;
 }
 
 export const ROBOT_CONFIG: RobotConfig = {
@@ -39,6 +42,9 @@ export const ROBOT_CONFIG: RobotConfig = {
   username: 'Token|LTAI5tRs6q8KJonwMXcvGABe|post-cn-i7m25yinr0c',
   token:
     'R|LzMT+XLFl5s/YWJ/MlDz4t/Lq5HC1iGU1P28HAMaxYxn8aQbALNtml7QZKl9L9kPTa0WZpLnkfkoSNklzDfrQejZwDUSzsd4X4qaD3n2TrADZbyy8RH08HNIsA2iv1DoYbz7MJWZDYC3DlW7gLEr35K6sQYWM6qmNXkyJduQm4vgS3Asj/GrCjhKOSZxhr49sLa92z2q6Q8sFLJD9ZhOGElzeSozsSru8LRVkiv/buUr4cJXFoNycvRILssyLnFo+jvs/wM1Vix3vRV3RTR92eAPP5+wbnIAPuCXnW8DfiizoJQRD4wfMmjlVmd5bi/pcL2dZ4dfsrzQ7q+05T0zxCflWuGQ/QXW6Zs6hizc18z5ZhkhDHimRWJCjqqqTGBscU8mf3miA9pr71x608Hleq1rkjdnM0Lt|W|LzMT+XLFl5s/YWJ/MlDz4t/Lq5HC1iGUbrBXN77FaXpn8aQbALNtml7QZKl9L9kPTa0WZpLnkfkoSNklzDfrQejZwDUSzsd4X4qaD3n2TrADZbyy8RH08HNIsA2iv1DoYbz7MJWZDYC3DlW7gLEr35K6sQYWM6qmNXkyJduQm4vgS3Asj/GrCjhKOSZxhr49sLa92z2q6Q8sFLJD9ZhOGElzeSozsSru8LRVkiv/buVz4xDJzgSCJtfL390UDKpcgiQfES++LgHOmbDgt2heSSBbgcB6OwseyoMqS6Htp9Cjhc34yw3pVXC9nWeHX7K80O6vtOU9M8Qn5VrhkP0F1umbOoYs3NfM+WYZIQx4pkViQo6qqkxgbHFPJn95ogPaa+9cetPB5Xqta5I3ZzNC7Q==',
+  mqtt_hostname: 'post-cn-i7m25yinr0c.mqtt.aliyuncs.com',
+  mqtt_port: 1883,
+  mqtt_sub_topic: 'robot-topic/1919862081/sub',
 };
 
 export const GET_MQTT_MESSAGE_SCRIPT: string = `node src/app/shared/robot/robot-mqtt-api-server.js APPKEY=2e9ecb3d0c514eec920916fa1d0503a7 APPTOKEN=mo19OkoGQ539BFf0`;

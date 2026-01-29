@@ -1,3 +1,41 @@
-<div class="fullpage">
-	<div class="content-center">Order Page</div>
+<div class="fullpage order-menu">
+	<div *ngFor="let section of menuSections" class="menu-section">
+		<h2 class="section-title">{{ section.title }}</h2>
+		<div class="dish-list">
+			<div class="dish-item" *ngFor="let dish of section.dishes" (click)="addToCart(dish)">
+				<img [src]="dish.image" [alt]="dish.name" class="dish-image" />
+				<div class="dish-name">{{ dish.name }}</div>
+				<div class="add-label">Add</div>
+			</div>
+		</div>
+	</div>
+
+	<button class="cart-btn" (click)="openCart()">
+		Cart <span *ngIf="cartItems.length">({{ cartItems.length }})</span>
+	</button>
+
+	<div class="cart-modal-backdrop" *ngIf="showCartModal">
+		<div class="cart-modal">
+			<h3>Shopping Cart</h3>
+			<button class="close-btn" (click)="closeCart()">Close</button>
+			<div *ngIf="cartItems.length; else emptyCart">
+				<table class="cart-table">
+					<thead>
+						<tr><th>Dish</th><th>Quantity</th></tr>
+					</thead>
+					<tbody>
+						<tr *ngFor="let item of cartItems">
+							<td>{{ item.dish.name }}</td>
+							<td>{{ item.quantity }}</td>
+						</tr>
+					</tbody>
+				</table>
+				<button class="order-btn" (click)="placeOrder()">Place Order</button>
+				<div class="order-success" *ngIf="orderSuccess">Order placed successfully!</div>
+			</div>
+			<ng-template #emptyCart>
+				<div class="empty-cart">Cart is empty.</div>
+			</ng-template>
+		</div>
+	</div>
 </div>

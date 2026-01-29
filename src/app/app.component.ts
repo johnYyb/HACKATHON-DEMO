@@ -1,6 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { MqttService } from './shared/mqtt.service';
+import { ROBOT_CONFIG } from './shared/robot-config';
+import { listener } from './shared/mqtt-robot';
 
 @Component({
   selector: 'app-root',
@@ -19,6 +21,7 @@ export class AppComponent implements OnInit, OnDestroy {
   ngOnInit() {
     // this.connectToDemo();
     // this.connectRobotMqtt();
+    // listener.startListening();
   }
 
   ngOnDestroy() {
@@ -97,28 +100,28 @@ export class AppComponent implements OnInit, OnDestroy {
     // Connect to MQTT broker with configuration
     // Update the configuration to match your MQTT broker
     this.mqttService.connect({
-      hostname: 'post-cn-i7m25yinr0c.mqtt.aliyuncs.com',
-      port: 1883,
-      path: '/',
+      hostname: ROBOT_CONFIG.mqtt_hostname,
+      port: ROBOT_CONFIG.mqtt_port,
       protocol: 'mqtt',
       clean: true,
       connectTimeout: 4000,
       reconnectPeriod: 4000,
-      clientId: `GID_Robot_Open@@@a825a2fbb88f470ca3e32ba9a49beffb`,
-      username: 'Token|LTAI5tRs6q8KJonwMXcvGABe|post-cn-i7m25yinr0c',
-      password: 'R|LzMT+XLFl5s/YWJ/MlDz4t/Lq5HC1iGU1P28HAMaxYxn8aQbALNtml7QZKl9L9kPTa0WZpLnkfkoSNklzDfrQejZwDUSzsd4X4qaD3n2TrADZbyy8RH08HNIsA2iv1DoYbz7MJWZDYC3DlW7gLEr35K6sQYWM6qmNXkyJduQm4vgS3Asj/GrCjhKOSZxhr49sLa92z2q6Q8sFLJD9ZhOGElzeSozsSru8LRVkiv/buUr4cJXFoNycvRILssyLnFo+jvs/wM1Vix3vRV3RTR92eAPP5+wbnIAPuCXnW8DfiizoJQRD4wfMmjlVmd5bi/pcL2dZ4dfsrzQ7q+05T0zxCflWuGQ/QXW6Zs6hizc18z5ZhkhDHimRWJCjqqqTGBscU8mf3miA9pr71x608Hleq1rkjdnM0Lt|W|LzMT+XLFl5s/YWJ/MlDz4t/Lq5HC1iGUbrBXN77FaXpn8aQbALNtml7QZKl9L9kPTa0WZpLnkfkoSNklzDfrQejZwDUSzsd4X4qaD3n2TrADZbyy8RH08HNIsA2iv1DoYbz7MJWZDYC3DlW7gLEr35K6sQYWM6qmNXkyJduQm4vgS3Asj/GrCjhKOSZxhr49sLa92z2q6Q8sFLJD9ZhOGElzeSozsSru8LRVkiv/buVz4xDJzgSCJtfL390UDKpcgiQfES++LgHOmbDgt2heSSBbgcB6OwseyoMqS6Htp9Cjhc34yw3pVXC9nWeHX7K80O6vtOU9M8Qn5VrhkP0F1umbOoYs3NfM+WYZIQx4pkViQo6qqkxgbHFPJn95ogPaa+9cetPB5Xqta5I3ZzNC7Q==',
+      clientId: ROBOT_CONFIG.clientId,
+      username: ROBOT_CONFIG.username,
+      password: ROBOT_CONFIG.token,
+      protocolVersion: 4,
     });
     
-    // Subscribe to navigation topic after connection is established
+    // Subscribe to robot topic after connection is established
     // Wait longer to ensure connection is established
     setTimeout(() => {
       if (this.mqttService.getConnectionStatus()) {
-        this.mqttService.subscribeToMultipleTopics(['robot-topic/1919862081/sub']);
-        console.log('✓ MQTT Service ready - listening for navigation messages');
+        this.mqttService.subscribeToMultipleTopics(['robot-open/1919862081/pub/data', 'robot-topic/1919862081/sub']);
+        console.log('✓ MQTT Service ready - listening for robot messages');
       } else {
         console.warn('MQTT not connected yet, retrying...');
         setTimeout(() => {
-          this.mqttService.subscribeToMultipleTopics(['robot-topic/1919862081/sub']);
+          this.mqttService.subscribeToMultipleTopics(['robot-open/1919862081/pub/data', 'robot-topic/1919862081/sub']);
         }, 2000);
       }
     }, 2000);
