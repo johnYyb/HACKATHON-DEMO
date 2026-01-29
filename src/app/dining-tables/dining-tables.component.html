@@ -1,6 +1,16 @@
 
 <div class="dining-tables-list">
-	<div class="dining-table-item" *ngFor="let table of tables; let i = index" (click)="onTableClick(i)">
-		Table {{ i + 1 }}
+	<div class="dining-table-item" *ngFor="let table of tables; let i = index" [ngClass]="table.state" (click)="onTableClick(i)">
+		<div class="table-icon">
+			<span *ngIf="table.state === 'idle'">🍽️</span>
+			<span *ngIf="table.state === 'inuse'">🟢</span>
+		</div>
+		<div class="table-info">
+			<div class="table-title">Table {{ i + 1 }}</div>
+			<div class="table-state" [ngClass]="table.state">
+				<span *ngIf="table.state === 'idle'">Idle - Available</span>
+				<span *ngIf="table.state === 'inuse'">In Use</span>
+			</div>
+		</div>
 	</div>
 </div>

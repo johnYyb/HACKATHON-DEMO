@@ -1,11 +1,11 @@
 <div class="fullpage order-menu">
-	<div *ngFor="let section of menuSections" class="menu-section">
+	<div *ngFor="let section of menuSections; let i = index" class="menu-section" [ngClass]="'section-bg-' + i">
 		<h2 class="section-title">{{ section.title }}</h2>
 		<div class="dish-list">
-			<div class="dish-item" *ngFor="let dish of section.dishes" (click)="addToCart(dish)">
+			<div class="dish-item" *ngFor="let dish of section.dishes">
+				<button class="add-fab" (click)="addToCart(dish); $event.stopPropagation();">+</button>
 				<img [src]="dish.image" [alt]="dish.name" class="dish-image" />
 				<div class="dish-name">{{ dish.name }}</div>
-				<div class="add-label">Add</div>
 			</div>
 		</div>
 	</div>
@@ -16,20 +16,26 @@
 
 	<div class="cart-modal-backdrop" *ngIf="showCartModal">
 		<div class="cart-modal">
-			<h3>Shopping Cart</h3>
-			<button class="close-btn" (click)="closeCart()">Close</button>
+			<div class="cart-header">
+				<h3><span class="cart-icon">🛒</span> Shopping Cart</h3>
+				<button class="close-btn" (click)="closeCart()">×</button>
+			</div>
 			<div *ngIf="cartItems.length; else emptyCart">
-				<table class="cart-table">
-					<thead>
-						<tr><th>Dish</th><th>Quantity</th></tr>
-					</thead>
-					<tbody>
-						<tr *ngFor="let item of cartItems">
-							<td>{{ item.dish.name }}</td>
-							<td>{{ item.quantity }}</td>
-						</tr>
-					</tbody>
-				</table>
+				<div class="cart-list">
+					<div class="cart-item-row" *ngFor="let item of cartItems">
+						<div class="cart-item-avatar">
+							<img [src]="item.dish.image" [alt]="item.dish.name" />
+						</div>
+						<div class="cart-item-info">
+							<div class="cart-item-name">{{ item.dish.name }}</div>
+							<div class="cart-item-qty">
+								<button class="qty-btn" (click)="decrementItem(item.dish.name)">-</button>
+								<span class="qty-value">{{ item.quantity }}</span>
+								<button class="qty-btn" (click)="incrementItem(item.dish.name)">+</button>
+							</div>
+						</div>
+					</div>
+				</div>
 				<button class="order-btn" (click)="placeOrder()">Place Order</button>
 				<div class="order-success" *ngIf="orderSuccess">Order placed successfully!</div>
 			</div>

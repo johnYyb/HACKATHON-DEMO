@@ -67,12 +67,17 @@
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "proxyConfig": "./proxy.conf.json"
+          },
           "configurations": {
             "production": {
-              "browserTarget": "hackathon-demo:build:production"
+              "browserTarget": "hackathon-demo:build:production",
+              "proxyConfig": "./proxy.conf.json"
             },
             "development": {
-              "browserTarget": "hackathon-demo:build:development"
+              "browserTarget": "hackathon-demo:build:development",
+              "proxyConfig": "./proxy.conf.json"
             }
           },
           "defaultConfiguration": "development"

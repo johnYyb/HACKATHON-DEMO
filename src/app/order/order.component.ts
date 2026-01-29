@@ -1,3 +1,4 @@
+
 import { Component } from '@angular/core';
 
 interface Dish {
@@ -19,28 +20,26 @@ export class OrderComponent {
     {
       title: 'Recommended',
       dishes: [
-        { name: 'Sushi', image: 'assets/sushi.jpg' },
-        { name: 'Steak', image: 'assets/steak.jpg' },
-        { name: 'Salad', image: 'assets/salad.jpg' },
-        { name: 'Pizza', image: 'assets/pizza.jpg' }
+        { name: 'Sushi', image: 'assets/sushi.jpeg' },
+        { name: 'Steak', image: 'assets/steak.jpeg' },
+        { name: 'Salad', image: 'assets/salad.jpeg' },
+        { name: 'Pizza', image: 'assets/pizza.jpeg' }
       ]
     },
     {
       title: 'Main Course',
       dishes: [
-        { name: 'Pasta', image: 'assets/pasta.jpg' },
-        { name: 'Burger', image: 'assets/burger.jpg' },
-        { name: 'Chicken', image: 'assets/chicken.jpg' },
-        { name: 'Fish', image: 'assets/fish.jpg' }
+        { name: 'Pasta', image: 'assets/pasta.jpeg' },
+        { name: 'Burger', image: 'assets/burger.jpeg' },
+        { name: 'Chicken', image: 'assets/chicken.jpeg' },
+        { name: 'Fish', image: 'assets/fish.jpeg' }
       ]
     },
     {
       title: 'Alcohol',
       dishes: [
-        { name: 'Beer', image: 'assets/beer.jpg' },
-        { name: 'Wine', image: 'assets/wine.jpg' },
-        { name: 'Whiskey', image: 'assets/whiskey.jpg' },
-        { name: 'Cocktail', image: 'assets/cocktail.jpg' }
+        { name: 'Beer', image: 'assets/beer.jpeg' },
+        { name: 'Wine', image: 'assets/wine.jpeg' },
       ]
     }
   ];
@@ -68,8 +67,13 @@ export class OrderComponent {
   }
 
   placeOrder() {
+    // Collect all items with name and quantity
+    const orderList = this.cartItems.map(item => ({
+      name: item.dish.name,
+      quantity: item.quantity
+    }));
+    console.log('Order List:', orderList);
     this.orderSuccess = true;
-    this.cart = {};
     setTimeout(() => {
       this.showCartModal = false;
       this.orderSuccess = false;
@@ -78,5 +82,19 @@ export class OrderComponent {
 
   get cartItems() {
     return Object.values(this.cart);
+  }
+
+  incrementItem(dishName: string) {
+    if (this.cart[dishName]) {
+      this.cart[dishName].quantity++;
+    }
+  }
+
+  decrementItem(dishName: string) {
+    if (this.cart[dishName] && this.cart[dishName].quantity > 1) {
+      this.cart[dishName].quantity--;
+    } else if (this.cart[dishName] && this.cart[dishName].quantity === 1) {
+      delete this.cart[dishName];
+    }
   }
 }

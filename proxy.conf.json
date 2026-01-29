@@ -1,0 +1,8 @@
+{
+  "/cloud": {
+    "target": "http://s.padbot.cn:9080",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "debug"
+  }
+}

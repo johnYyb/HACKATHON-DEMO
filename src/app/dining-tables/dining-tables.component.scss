@@ -17,15 +17,71 @@
 }
 
 .dining-table-item {
-  height: 100%;
-  width: 30%;
-  background: #f5f5f5;
-  border-radius: 12px;
+  height: 90%;
+  width: 22vw;
+  min-width: 180px;
+  max-width: 260px;
+  background: linear-gradient(135deg, #fafdff 60%, #e3f0ff 100%);
+  border-radius: 18px;
   flex-shrink: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  font-size: 1.1rem;
+  box-shadow: 0 4px 18px rgba(80,120,200,0.10);
+  margin: 0 18px;
+  padding: 18px 22px;
+  cursor: pointer;
+  position: relative;
+  border: 2.5px solid #e3eafc;
+  transition: box-shadow 0.18s, border 0.18s, background 0.18s;
+}
+.dining-table-item:hover {
+  box-shadow: 0 8px 32px rgba(80,120,200,0.18);
+  border-color: #1976d2;
+  background: linear-gradient(135deg, #e3f0ff 60%, #fafdff 100%);
+}
+.dining-table-item.idle {
+  border-color: #43a047;
+}
+.dining-table-item.inuse {
+  border-color: #ff7043;
+  background: linear-gradient(135deg, #fff3e0 60%, #ffe0b2 100%);
+}
+.table-icon {
+  font-size: 2.2rem;
+  margin-right: 18px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.5rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  margin: 0 8px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #e3eafc;
+  box-shadow: 0 1px 4px rgba(80,120,200,0.08);
+}
+.dining-table-item.inuse .table-icon {
+  background: #ffe0b2;
+}
+.table-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+}
+.table-title {
+  font-size: 1.18rem;
+  font-weight: 600;
+  color: #2a3a5a;
+  margin-bottom: 4px;
+}
+.table-state {
+  font-size: 0.98rem;
+  font-weight: 500;
+  color: #43a047;
+  letter-spacing: 0.5px;
+}
+.table-state.inuse {
+  color: #ff7043;
 }

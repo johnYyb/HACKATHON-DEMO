@@ -19,6 +19,10 @@ export interface RobotConfig {
   mqtt_hostname: string;
   mqtt_port: number;
   mqtt_sub_topic: string;
+  backend_url: string;
+  pointA: string;
+  pointB: string,
+  pointC: string,
 }
 
 export const ROBOT_CONFIG: RobotConfig = {
@@ -27,16 +31,19 @@ export const ROBOT_CONFIG: RobotConfig = {
   kitchenPointId: '2',
   diningAreaPointId: '3',
   waitingAreaPointId: '4',
+  pointA: 'A',
+  pointB: 'B',
+  pointC: 'C',
   // Add more config keys as needed
   appkey: '',
   apptoken: '',
-  BASE_URL: 'http://s.padbot.cn:9080/cloud',
+  BASE_URL: 'http://s.padbot.cn:9080/',
   MOVE_URL:
-    'http://s.padbot.cn:9080/cloud/openapinav/controlRobotMoveToTargetPoint.action',
+    '/cloud/openapinav/controlRobotMoveToTargetPoint.action',
   SPEECH_URL:
-    'http://s.padbot.cn:9080/cloud/openapirobot/speechSynthesis.action',
+    '/cloud/openapirobot/speechSynthesis.action',
   MQTT_URL:
-    'http://s.padbot.cn:9080/cloud/openapirobot/applyRobotMqttInfo.action',
+    '/cloud/openapirobot/applyRobotMqttInfo.action',
   serialNumber: 'PX6397',
   clientId: 'GID_Robot_Open@@@a825a2fbb88f470ca3e32ba9a49beffb',
   username: 'Token|LTAI5tRs6q8KJonwMXcvGABe|post-cn-i7m25yinr0c',
@@ -45,6 +52,7 @@ export const ROBOT_CONFIG: RobotConfig = {
   mqtt_hostname: 'post-cn-i7m25yinr0c.mqtt.aliyuncs.com',
   mqtt_port: 1883,
   mqtt_sub_topic: 'robot-topic/1919862081/sub',
+  backend_url: 'http://s.padbot.cn:9080/cloud',
 };
 
 export const GET_MQTT_MESSAGE_SCRIPT: string = `node src/app/shared/robot/robot-mqtt-api-server.js APPKEY=2e9ecb3d0c514eec920916fa1d0503a7 APPTOKEN=mo19OkoGQ539BFf0`;

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-// import * as CryptoJS from 'crypto-js';
+import * as CryptoJS from 'crypto-js';
 import { ROBOT_CONFIG } from './robot-config';
 
 /**
@@ -64,8 +64,7 @@ export class RobotControlService {
     console.log('签名原始串:', signatureString);
     
     // Step 3: 计算 MD5 并转换为小写16进制字符串
-    // const sign = CryptoJS.MD5(signatureString).toString();
-    const sign = '';
+    const sign = CryptoJS.MD5(signatureString).toString();
     return sign;
   }
 
@@ -208,9 +207,7 @@ export class RobotControlService {
    * @returns Observable
    */
   guideToTable(serialNumber: string, mapId: string, targetPointId: string, tableNumber?: string): Observable<any> {
-    const message = tableNumber 
-      ? `请跟我来，我带您去${tableNumber}号桌。`
-      : '请跟我来，我带您去您的座位。';
+    const message = 'Please follow me, I will take you to your seat.';
     
     // 先说话，然后移动
     return new Observable(observer => {
@@ -242,8 +239,8 @@ export class RobotControlService {
    */
   deliverFood(serialNumber: string, mapId: string, targetPointId: string, tableNumber?: string): Observable<any> {
     const message = tableNumber 
-      ? `正在为${tableNumber}号桌送餐，请稍候。`
-      : '您的餐点来了，请享用。';
+      ? `Your food is being delivered, please wait.`
+      : 'Your meal is here, please enjoy.';
     
     return new Observable(observer => {
       // 先移动到目标位置
