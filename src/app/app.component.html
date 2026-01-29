@@ -1,0 +1,22 @@
+
+
+<ng-container *ngIf="isHomePage(); else featurePage">
+  <div class="fullscreen-layout">
+    <div class="left-pane" [class.pane-animate]="animatingPane === 'order'" (click)="paneNavigate('order')">
+      <span class="order-btn">Order</span>
+    </div>
+    <div class="right-pane">
+      <div class="right-top" [class.pane-animate]="animatingPane === 'pay'" (click)="paneNavigate('pay')">
+        <span class="pay-btn">Pay</span>
+      </div>
+      <div class="right-bottom" [class.pane-animate]="animatingPane === 'other'" (click)="paneNavigate('other')">
+        <span class="other-btn">Other</span>
+      </div>
+    </div>
+  </div>
+</ng-container>
+<ng-template #featurePage>
+  <app-navigator></app-navigator>
+  <app-dining-tables *ngIf="showDiningTables()"></app-dining-tables>
+  <router-outlet></router-outlet>
+</ng-template>

@@ -1,0 +1,121 @@
+.left-pane, .right-top, .right-bottom {
+	cursor: pointer;
+}
+
+
+
+.fullscreen-layout {
+	display: flex;
+	width: 100vw;
+	height: 100vh;
+	min-height: 100vh;
+	overflow: hidden;
+}
+
+.left-pane {
+	flex: 1;
+	background: linear-gradient(135deg, #6dd5ed 0%, #2193b0 100%);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.right-pane {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+}
+
+.right-top {
+	flex: 1;
+	background: linear-gradient(135deg, #f7971e 0%, #ffd200 100%);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.right-bottom {
+	flex: 1;
+	background: linear-gradient(135deg, #f857a6 0%, #ff5858 100%);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.order-btn, .pay-btn, .other-btn {
+	color: #fff;
+	font-size: 2rem;
+	font-weight: bold;
+	padding: 2.5rem 3rem;
+	border-radius: 2rem;
+	text-decoration: none;
+	background: transparent;
+	border: none;
+	outline: none;
+	box-shadow: none;
+	transition: none;
+	opacity: 0.85;
+}
+
+// Remove hover/active effects
+.order-btn.active, .order-btn:hover,
+.pay-btn.active, .pay-btn:hover,
+.other-btn.active, .other-btn:hover {
+	background: transparent;
+	box-shadow: none;
+	transform: none;
+}
+
+// Pane click animation
+.pane-animate {
+	animation: paneClickAnim 0.4s cubic-bezier(0.4,0,0.2,1);
+}
+
+@keyframes paneClickAnim {
+	0% { filter: brightness(1) scale(1); }
+	30% { filter: brightness(1.2) scale(1.04); }
+	60% { filter: brightness(0.95) scale(0.98); }
+	100% { filter: brightness(1) scale(1); }
+}
+
+@media (max-width: 900px) {
+	.fullscreen-layout {
+		flex-direction: column;
+	}
+	.left-pane, .right-pane {
+		flex: unset;
+		width: 100vw;
+		height: 33.33vh;
+		min-height: 120px;
+	}
+	.right-pane {
+		flex-direction: row;
+		height: 66.66vh;
+	}
+	.right-top, .right-bottom {
+		flex: 1;
+		height: 100%;
+	}
+}
+
+.section-content {
+	margin: 2rem auto;
+	max-width: 600px;
+	background: #fafafa;
+	border-radius: 8px;
+	box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+	padding: 2rem;
+}
+
+@media (max-width: 600px) {
+	.main-sections {
+		flex-direction: column;
+		a {
+			width: 100%;
+			margin-bottom: 0.5rem;
+		}
+	}
+	.section-content {
+		padding: 1rem;
+	}
+}

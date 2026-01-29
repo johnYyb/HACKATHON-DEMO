@@ -1,0 +1,6 @@
+
+<div class="dining-tables-list">
+	<div class="dining-table-item" *ngFor="let table of tables; let i = index" (click)="onTableClick(i)">
+		Table {{ i + 1 }}
+	</div>
+</div>
