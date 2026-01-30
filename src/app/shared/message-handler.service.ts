@@ -15,6 +15,7 @@ export class MessageHandlerService {
   private robotFiRecords: any[] = [];
   // Emits each new fi value as it arrives
   // public robotFi$ = new Subject<any>();
+  public robotFi$ = new Subject<any>();
 
   /**
    * Handle incoming MQTT messages and navigate accordingly
@@ -58,7 +59,7 @@ export class MessageHandlerService {
 
   handleRobotMessage(topic: string, message: string): void {
     console.log(`Received robot message on topic ${topic}: ${message}`);
-    try {``
+    try {
       const { t, ...rest } = JSON.parse(message);
       switch (t) {
         case '1108':
@@ -71,7 +72,8 @@ export class MessageHandlerService {
             // store fi in records and emit to subscribers
             if (id !== undefined && id !== null) {
               this.robotFiRecords.push(id);
-              // try { this.robotFi$.next(id); } catch (e) { /* ignore emit errors */ }
+              console.log('length of robotFiRecords:', this.robotFiRecords.length);
+              try { this.robotFi$.next(id); } catch (e) { /* ignore emit errors */ }
             }
           }
           break;

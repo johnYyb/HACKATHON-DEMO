@@ -18,9 +18,9 @@
 
   <div class="detection-panel">
     <div class="detected-count">{{ recognizedCount === null ? 0 : recognizedCount }} Customers Recognized</div>
-    <div class="detection-actions">
+    <!-- <div class="detection-actions">
       <button class="confirm-btn" (click)="confirmDetected()" [disabled]="loading || recognizedCount === null">Confirm & Seat</button>
-    </div>
+    </div> -->
     <div class="status" aria-live="polite">
       <div *ngIf="loading" class="loading">Sending command to robot...</div>
       <div *ngIf="!loading && message" class="message">{{ message }}</div>
