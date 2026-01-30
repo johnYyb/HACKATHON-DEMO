@@ -9,6 +9,7 @@ import { AppComponent } from './app.component';
 import { OrderComponent } from './order/order.component';
 import { PayComponent } from './pay/pay.component';
 import { OtherComponent } from './other/other.component';
+import { SeatingComponent } from './seating/seating.component';
 import { DiningTablesComponent } from './dining-tables/dining-tables.component';
 import { NavigatorComponent } from './navigator/navigator.component';
 import { ModernMenuComponent } from './modern-menu/modern-menu.component';
@@ -19,6 +20,7 @@ import { ModernMenuComponent } from './modern-menu/modern-menu.component';
     OrderComponent,
     PayComponent,
     OtherComponent,
+    SeatingComponent,
     DiningTablesComponent,
     NavigatorComponent,
     ModernMenuComponent

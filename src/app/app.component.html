@@ -9,6 +9,9 @@
       <div class="right-top" [class.pane-animate]="animatingPane === 'pay'" (click)="paneNavigate('pay')">
         <span class="pay-btn">Pay</span>
       </div>
+      <div class="right-middle" [class.pane-animate]="animatingPane === 'seating'" (click)="paneNavigate('seating')">
+        <span class="seating-btn">Seating</span>
+      </div>
       <div class="right-bottom" [class.pane-animate]="animatingPane === 'other'" (click)="paneNavigate('other')">
         <span class="other-btn">Other</span>
       </div>

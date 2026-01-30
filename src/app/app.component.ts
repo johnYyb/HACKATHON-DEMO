@@ -11,7 +11,7 @@ import { listener } from './shared/mqtt-robot';
 })
 export class AppComponent implements OnInit, OnDestroy {
   title = 'hackathon-demo';
-  animatingPane: 'order' | 'pay' | 'other' | null = null;
+  animatingPane: 'order' | 'pay' | 'other' | 'seating' | null = null;
   
   constructor(
     public router: Router,
@@ -41,7 +41,7 @@ export class AppComponent implements OnInit, OnDestroy {
   // test ng.getComponent(document.querySelector('app-root')).publishNavigationMessage('pay')
 
   // Test method to publish MQTT messages
-  publishNavigationMessage(route: 'order' | 'pay' | 'other') {
+  publishNavigationMessage(route: 'order' | 'pay' | 'other' | 'seating') {
     if (!this.mqttService.getConnectionStatus()) {
       console.error('MQTT not connected! Cannot publish message.');
       return;
@@ -50,14 +50,14 @@ export class AppComponent implements OnInit, OnDestroy {
     console.log(`✓ Published "${route}" to navigation topic`);
   }
 
-  triggerPaneAnimation(pane: 'order' | 'pay' | 'other') {
+  triggerPaneAnimation(pane: 'order' | 'pay' | 'other' | 'seating') {
     this.animatingPane = pane;
     setTimeout(() => {
       this.animatingPane = null;
     }, 400); // Animation duration
   }
   
-  paneNavigate(pane: 'order' | 'pay' | 'other') {
+  paneNavigate(pane: 'order' | 'pay' | 'other' | 'seating') {
     this.triggerPaneAnimation(pane);
     setTimeout(() => {
       this.router.navigate(['/' + pane]);
