@@ -52,7 +52,7 @@ export const ROBOT_CONFIG: RobotConfig = {
   mqtt_hostname: 'post-cn-i7m25yinr0c.mqtt.aliyuncs.com',
   mqtt_port: 1883,
   mqtt_sub_topic: 'robot-topic/1919862081/sub',
-  backend_url: 'http://s.padbot.cn:9080/cloud',
+  backend_url: 'http://10.110.120.82:3000',
 };
 
 export const GET_MQTT_MESSAGE_SCRIPT: string = `node src/app/shared/robot/robot-mqtt-api-server.js APPKEY=2e9ecb3d0c514eec920916fa1d0503a7 APPTOKEN=mo19OkoGQ539BFf0`;

@@ -4,9 +4,10 @@ import { RouterModule, Routes } from '@angular/router';
 import { OrderComponent } from './order/order.component';
 import { PayComponent } from './pay/pay.component';
 import { OtherComponent } from './other/other.component';
+import { ModernMenuComponent } from './modern-menu/modern-menu.component';
 
 const routes: Routes = [
-  { path: 'order', component: OrderComponent },
+  { path: 'order', component: ModernMenuComponent },
   { path: 'pay', component: PayComponent },
   { path: 'other', component: OtherComponent },
 ];

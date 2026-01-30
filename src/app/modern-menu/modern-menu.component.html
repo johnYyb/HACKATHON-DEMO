@@ -1,0 +1,111 @@
+<div class="modern-menu-layout">
+  <!-- Left Sidebar -->
+  <aside class="sidebar" style="display:none">
+    <div class="sidebar-logo">
+      <span class="logo-icon">🍽️</span>
+    </div>
+    <nav class="sidebar-nav">
+      <button class="sidebar-btn active"><span>🏠</span></button>
+      <button class="sidebar-btn"><span>📋</span></button>
+      <button class="sidebar-btn"><span>💰</span></button>
+      <button class="sidebar-btn"><span>💬</span></button>
+      <button class="sidebar-btn"><span>🔔</span></button>
+      <button class="sidebar-btn"><span>⚙️</span></button>
+    </nav>
+    <button class="sidebar-btn logout"><span>🚪</span></button>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <!-- Header -->
+    <header class="header">
+      <div class="header-left">
+        <h1 class="restaurant-name">{{ restaurantName }}</h1>
+        <div class="header-date">{{ currentDate }}</div>
+      </div>
+      <div class="header-search">
+        <span class="search-icon">🔍</span>
+        <input type="text" [(ngModel)]="searchQuery" placeholder="Search for food, coffee, etc..." class="search-input" />
+      </div>
+    </header>
+
+    <!-- Category Tabs -->
+    <div class="category-tabs">
+      <button
+        *ngFor="let cat of categories"
+        class="category-tab"
+        [class.active]="activeCategory === cat"
+        (click)="selectCategory(cat)"
+      >{{ cat }}</button>
+    </div>
+
+    <!-- Choose Dishes Section -->
+    <section class="dishes-section">
+      <div class="dishes-header">
+        <h2 class="dishes-title">Choose Dishes</h2>
+        <div class="dine-in-dropdown">
+          <span class="dropdown-icon" style="margin-top:-8px">⌄</span>
+          <span>Dine In</span>
+        </div>
+      </div>
+      <div class="dishes-grid">
+        <div class="dish-card" *ngFor="let item of menuItems" (click)="addToOrder(item)">
+          <img [src]="item.image" [alt]="item.name" class="dish-img" />
+          <div class="dish-name">{{ item.name }}</div>
+          <div class="dish-price">{{ item.price }}</div>
+          <div class="dish-available">{{ item.available }}</div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Right Sidebar: Orders Panel -->
+  <aside class="orders-panel" *ngIf="orderItems.length > 0">
+    <h2 class="orders-title">Orders {{ orderId }}</h2>
+    <div class="order-type-tabs">
+      <button
+        *ngFor="let type of orderTypes"
+        class="order-type-btn"
+        [class.active]="activeOrderType === type"
+        (click)="selectOrderType(type)"
+      >{{ type }}</button>
+    </div>
+    <div class="orders-list-header">
+      <span class="orders-col-item">Item</span>
+      <span class="orders-col-qty">Qty</span>
+      <span class="orders-col-price">Price</span>
+    </div>
+    <div class="orders-list">
+      <div class="order-item" *ngFor="let orderItem of orderItems">
+        <div class="order-item-row">
+          <img [src]="orderItem.image" [alt]="orderItem.name" class="order-item-img" />
+          <div class="order-item-info">
+            <div class="order-item-name">{{ orderItem.name }}</div>
+            <div class="order-item-price">$ {{ orderItem.price.toFixed(2) }}</div>
+          </div>
+          <div class="order-item-qty">
+            <button class="qty-btn" (click)="updateQuantity(orderItem, -1)">-</button>
+            <span class="qty-value">{{ orderItem.quantity }}</span>
+            <button class="qty-btn" (click)="updateQuantity(orderItem, 1)">+</button>
+          </div>
+          <div class="order-item-total">$ {{ (orderItem.price * orderItem.quantity).toFixed(2) }}</div>
+        </div>
+        <div class="order-item-note-row">
+          <input type="text" [(ngModel)]="orderItem.note" class="order-note-input" placeholder="Order Note..." />
+          <button class="order-delete-btn" (click)="removeOrderItem(orderItem)">🗑️</button>
+        </div>
+      </div>
+    </div>
+    <div class="orders-summary">
+      <div class="orders-summary-row">
+        <span>Discount</span>
+        <span>${{ discount }}</span>
+      </div>
+      <div class="orders-summary-row subtotal">
+        <span>Sub total</span>
+        <span>$ {{ subTotal.toFixed(2) }}</span>
+      </div>
+    </div>
+    <button class="continue-btn" (click)="continueToPayment()">Continue</button>
+  </aside>
+</div>

@@ -35,7 +35,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   showDiningTables(): boolean {
     // Show dining tables only on specific routes, e.g., '/order', '/pay', '/other'
-    return ['/order', '/pay'].includes(this.router.url);
+    return ['/pay'].includes(this.router.url);
   }
 
   // test ng.getComponent(document.querySelector('app-root')).publishNavigationMessage('pay')
