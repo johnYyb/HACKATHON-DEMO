@@ -9,7 +9,7 @@ export class MessageHandlerService {
   // Collected m.fi values from robot messages of type 1108
   private robotFiRecords: any[] = [];
   // Emits each new fi value as it arrives
-  public robotFi$ = new Subject<any>();
+  // public robotFi$ = new Subject<any>();
   constructor(private router: Router) {}
 
   /**
@@ -67,7 +67,7 @@ export class MessageHandlerService {
             // store fi in records and emit to subscribers
             if (id !== undefined && id !== null) {
               this.robotFiRecords.push(id);
-              try { this.robotFi$.next(id); } catch (e) { /* ignore emit errors */ }
+              // try { this.robotFi$.next(id); } catch (e) { /* ignore emit errors */ }
             }
           }
           break;

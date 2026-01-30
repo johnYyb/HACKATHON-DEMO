@@ -57,6 +57,7 @@ export class SeatingComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.messageHandler.clearRobotFiRecords();
     // Unsubscribe from robotFi observable
     // if (this.robotFiSub) {
     //   this.robotFiSub.unsubscribe();
