@@ -91,7 +91,7 @@ export class MessageHandlerService {
               m: { ti, tn },
             } = rest;
             console.log('received robot get to position message:', ti, tn);
-            if(tn === ROBOT_CONFIG.pointB && this.isSubmitOrder){ // 假设pointB是用餐区
+            if(ti === ROBOT_CONFIG.diningAreaPointId && this.isSubmitOrder){ // 假设pointB是用餐区
               this.robotControlService.speak(ROBOT_CONFIG.serialNumber, `Here are your dishes. Enjoy your meal. Let me know if you need anything else.`).subscribe({
                 next: (response) => {
                   console.log('Arrived speech completed:', response);

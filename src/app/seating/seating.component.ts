@@ -4,11 +4,12 @@ import { MessageHandlerService } from '../shared/message-handler.service';
 import { Subscription } from 'rxjs';
 import { ROBOT_CONFIG } from '../shared/robot-config';
 import { RobotControlService } from '../shared/robot-control.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-seating',
   templateUrl: './seating.component.html',
-  styleUrls: ['./seating.component.scss']
+  styleUrls: ['./seating.component.scss'],
 })
 export class SeatingComponent implements OnInit, OnDestroy {
   loading = false;
@@ -20,7 +21,7 @@ export class SeatingComponent implements OnInit, OnDestroy {
     '2-person': 'TP_2',
     '4-person': 'TP_4',
     '6-person': 'TP_6',
-    '8-person': 'TP_8'
+    '8-person': 'TP_8',
   };
 
   // Sizes array used by template for iteration and display
@@ -28,7 +29,7 @@ export class SeatingComponent implements OnInit, OnDestroy {
     { key: '2-person', label: '2-person', capacity: 2 },
     { key: '4-person', label: '4-person', capacity: 4 },
     { key: '6-person', label: '6-person', capacity: 6 },
-    { key: '8-person', label: '8-person', capacity: 8 }
+    { key: '8-person', label: '8-person', capacity: 8 },
   ];
 
   // Detected customer count from robot camera (null = unknown)
@@ -47,6 +48,7 @@ export class SeatingComponent implements OnInit, OnDestroy {
     private messageHandler: MessageHandlerService,
     private ngZone: NgZone,
     private robotControl: RobotControlService,
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -79,11 +81,26 @@ export class SeatingComponent implements OnInit, OnDestroy {
   }
 
   /** Start polling stored records every second. */
-  startPolling(intervalMs: number = 1000) {
+  startPolling(intervalMs: number = 100) {
     if (this.pollIntervalId != null) return; // already polling
     this.pollIntervalId = window.setInterval(() => {
       // read the number of stored fi records and update recognizedCount
       this.recognizedCount = this.messageHandler.getRobotFiRecords().length;
+      if (this.recognizedCount > 4) {
+        this.robotControl
+          .speak(
+            ROBOT_CONFIG.serialNumber,
+            `Welcome! Please follow me to your table.`,
+          )
+          .subscribe({
+            next: (response) => {},
+            error: (error) => {},
+          });
+        this.stopPolling();
+        setTimeout(() => {
+          this.moveTo('4-person');
+        }, 1000);
+      }
     }, intervalMs) as unknown as number;
   }
 
@@ -96,34 +113,37 @@ export class SeatingComponent implements OnInit, OnDestroy {
   }
 
   moveTo(sizeKey: string) {
-        // Example: Toggle state for demo (remove in production)
-      // this.tables[tableIndex].state =
-      //   this.tables[tableIndex].state === 'idle' ? 'inuse' : 'idle';
-  
-      // const tableNumber = tableIndex + 1;
-      const mapId = ROBOT_CONFIG.mapId;
-      // const pointArray = [
-      //   ROBOT_CONFIG.pointA,
-      //   ROBOT_CONFIG.pointB,
-      //   ROBOT_CONFIG.pointC,
-      // ];
-      const targetPointId: string = ROBOT_CONFIG.diningAreaPointId as string;
-  
-      // console.log(`引导机器人到${tableNumber}号桌`);
-      const tableNumber = 2;
-      this.robotControl
-        .guideToTable(ROBOT_CONFIG.serialNumber, mapId, targetPointId )
-        .subscribe({
-          next: (response) => {
-            console.log(`成功引导到${tableNumber}号桌:`, response);
-            console.log(`机器人正在前往${tableNumber}号桌`);
-          },
-          error: (error) => {
-            console.error(`引导到${tableNumber}号桌失败:`, error);
-            console.log(`引导失败: ${error.message}`);
-          },
-        });
+    // Example: Toggle state for demo (remove in production)
+    // this.tables[tableIndex].state =
+    //   this.tables[tableIndex].state === 'idle' ? 'inuse' : 'idle';
 
+    // const tableNumber = tableIndex + 1;
+    const mapId = ROBOT_CONFIG.mapId;
+    // const pointArray = [
+    //   ROBOT_CONFIG.pointA,
+    //   ROBOT_CONFIG.pointB,
+    //   ROBOT_CONFIG.pointC,
+    // ];
+    const targetPointId: string = ROBOT_CONFIG.diningAreaPointId as string;
+
+    // console.log(`引导机器人到${tableNumber}号桌`);
+    const tableNumber = 2;
+    this.robotControl
+      .guideToTable(ROBOT_CONFIG.serialNumber, mapId, targetPointId)
+      .subscribe({
+        next: (response) => {
+          console.log(`成功引导到${tableNumber}号桌:`, response);
+          console.log(`机器人正在前往${tableNumber}号桌`);
+        },
+        error: (error) => {
+          console.error(`引导到${tableNumber}号桌失败:`, error);
+          console.log(`引导失败: ${error.message}`);
+        },
+      });
+
+    setTimeout(() => {
+      this.router.navigate(['/order']);
+    }, 3000);
 
     // const targetPointId = this.targetMap[sizeKey];
     // if (!targetPointId) {
@@ -156,7 +176,8 @@ export class SeatingComponent implements OnInit, OnDestroy {
     }
     const sizeKey = this.chooseSizeKeyForCount(this.recognizedCount);
     if (!sizeKey) {
-      this.message = 'No suitable table size found for count ' + this.recognizedCount;
+      this.message =
+        'No suitable table size found for count ' + this.recognizedCount;
       return;
     }
     // Call existing moveTo flow
