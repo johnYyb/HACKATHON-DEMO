@@ -10,7 +10,7 @@
   <div class="tables-grid" role="list">
     <div class="table-card" *ngFor="let s of sizes" role="listitem">
       <button class="table-btn" (click)="moveTo(s.key)" [disabled]="loading">
-        <span class="table-icon">🍽️</span>
+        <img class="table-icon" src="/assets/icons/plate.svg" alt="table icon">
         <span class="table-label">{{ s.label }}</span>
       </button>
       <div class="table-capacity">{{ s.capacity }} seats</div>

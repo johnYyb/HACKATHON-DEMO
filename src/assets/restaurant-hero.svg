@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Higher-fidelity SVG hero illustration (local asset) -->
+<svg width="1400" height="600" viewBox="0 0 1400 600" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bg1" x1="0" x2="1">
+      <stop offset="0" stop-color="#f6d365"/>
+      <stop offset="1" stop-color="#fda085"/>
+    </linearGradient>
+    <linearGradient id="bg2" x1="0" x2="1">
+      <stop offset="0" stop-color="#89f7fe"/>
+      <stop offset="1" stop-color="#66a6ff"/>
+    </linearGradient>
+    <filter id="soft" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="10" result="b"/>
+      <feBlend in="SourceGraphic" in2="b" mode="normal"/>
+    </filter>
+  </defs>
+
+  <!-- background -->
+  <rect width="100%" height="100%" fill="url(#bg1)" />
+  <circle cx="220" cy="120" r="140" fill="url(#bg2)" opacity="0.12" filter="url(#soft)"/>
+  <circle cx="1160" cy="90" r="180" fill="#ffffff" opacity="0.06"/>
+
+  <!-- larger table illustration -->
+  <g transform="translate(360,150)">
+    <rect x="0" y="0" width="680" height="300" rx="26" ry="26" fill="#fff" opacity="0.96"/>
+    <rect x="28" y="28" width="624" height="244" rx="14" ry="14" fill="#fff7ef"/>
+
+    <!-- plates around table -->
+    <g fill="#fff1f0" opacity="0.95">
+      <circle cx="80" cy="140" r="36" fill="#ff9a9e"/>
+      <circle cx="600" cy="140" r="36" fill="#a18cd1"/>
+      <circle cx="80" cy="60" r="26" fill="#ffd54f"/>
+      <circle cx="600" cy="60" r="26" fill="#66a6ff"/>
+    </g>
+
+    <!-- center decoration -->
+    <ellipse cx="340" cy="150" rx="120" ry="56" fill="#fff4e6"/>
+    <rect x="320" y="132" width="40" height="36" rx="8" fill="#ffb74d"/>
+  </g>
+
+  <!-- subtle title (for accessibility only, main title in HTML) -->
+  <title>Restaurant seating hero</title>
+</svg>

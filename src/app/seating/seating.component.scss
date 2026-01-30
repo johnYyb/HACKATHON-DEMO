@@ -13,7 +13,12 @@
   height: 180px;
   border-radius: 12px;
   overflow: hidden;
-  background-image: url('https://images.unsplash.com/photo-1555992336-03a23c6b1b4a?q=80&w=1400&auto=format&fit=crop&ixlib=rb-4.0.3&s=');
+  /* Use a local asset for the hero background. Fallback will still look nice if asset fails to load. */
+  background-image: url('/assets/restaurant-hero.svg');
+  background-color: #f6d365; /* fallback warm color */
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
   background-size: cover;
   background-position: center;
   box-shadow: 0 6px 18px rgba(0,0,0,0.12);
@@ -112,8 +117,10 @@
 }
 
 .table-capacity {
-  font-size: 13px;
-  color: #475569;
+  font-size: 15px;
+  color: #1f6feb; /* accent color for visibility */
+  font-weight: 700;
+  margin-top: 6px;
 }
 
 /* make each card visually distinct and colorful */
@@ -183,6 +190,11 @@
   .hero {
     height: 140px;
   }
+}
+
+/* Use @2x hero image on high-DPI displays */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .hero { background-image: url('/assets/restaurant-hero@2x.svg'); }
 }
 
 @media (max-width: 480px) {

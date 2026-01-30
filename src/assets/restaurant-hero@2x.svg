@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Retina @2x version (bigger viewBox for high-DPI screens) -->
+<svg width="2800" height="1200" viewBox="0 0 2800 1200" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bg1x" x1="0" x2="1">
+      <stop offset="0" stop-color="#f6d365"/>
+      <stop offset="1" stop-color="#fda085"/>
+    </linearGradient>
+    <linearGradient id="bg2x" x1="0" x2="1">
+      <stop offset="0" stop-color="#89f7fe"/>
+      <stop offset="1" stop-color="#66a6ff"/>
+    </linearGradient>
+    <filter id="softx" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="16" result="b"/>
+      <feBlend in="SourceGraphic" in2="b" mode="normal"/>
+    </filter>
+  </defs>
+
+  <rect width="100%" height="100%" fill="url(#bg1x)" />
+  <circle cx="440" cy="240" r="280" fill="url(#bg2x)" opacity="0.12" filter="url(#softx)"/>
+  <circle cx="2320" cy="180" r="360" fill="#ffffff" opacity="0.06"/>
+
+  <g transform="translate(720,300)">
+    <rect x="0" y="0" width="1360" height="600" rx="52" ry="52" fill="#fff" opacity="0.96"/>
+    <rect x="56" y="56" width="1248" height="488" rx="28" ry="28" fill="#fff7ef"/>
+    <g fill="#fff1f0" opacity="0.95">
+      <circle cx="160" cy="280" r="72" fill="#ff9a9e"/>
+      <circle cx="1200" cy="280" r="72" fill="#a18cd1"/>
+      <circle cx="160" cy="120" r="52" fill="#ffd54f"/>
+      <circle cx="1200" cy="120" r="52" fill="#66a6ff"/>
+    </g>
+    <ellipse cx="680" cy="300" rx="240" ry="112" fill="#fff4e6"/>
+    <rect x="640" y="264" width="80" height="72" rx="16" fill="#ffb74d"/>
+  </g>
+
+  <title>Restaurant seating hero (retina)</title>
+</svg>
