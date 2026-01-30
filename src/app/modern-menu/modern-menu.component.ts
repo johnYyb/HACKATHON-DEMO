@@ -15,7 +15,7 @@ interface OrderItem {
   price: number;
   quantity: number;
   note: string;
-  id?: number;
+  id: number;
 }
 
 interface SubmitOrderItem {
@@ -34,14 +34,21 @@ interface SubmitOrderPayload {
 @Component({
   selector: 'app-modern-menu',
   templateUrl: './modern-menu.component.html',
-  styleUrls: ['./modern-menu.component.scss']
+  styleUrls: ['./modern-menu.component.scss'],
 })
 export class ModernMenuComponent {
-  restaurantName = 'Jaegar Resto';
-  currentDate = 'Tuesday, 2 Feb 2021';
+  restaurantName = 'Chef Master';
+  currentDate = new Date().toDateString();
   searchQuery = '';
 
-  categories = ['Hot Dishes', 'Cold Dishes', 'Soup', 'Grill', 'Appetizer', 'Dessert'];
+  categories = [
+    'Hot Dishes',
+    'Cold Dishes',
+    'Soup',
+    'Grill',
+    'Appetizer',
+    'Dessert',
+  ];
   activeCategory = 'Hot Dishes';
 
   orderTypes = ['Dine In', 'To Go', 'Delivery'];
@@ -53,24 +60,81 @@ export class ModernMenuComponent {
   private itemIdCounter = 1;
 
   menuItems: MenuItem[] = [
-    { name: 'Spicy seasoned seafood noodles', image: 'assets/image4.png', price: '$ 2.29', available: '20 Bowls available', id: 1 },
-    { name: 'Salted Pasta with mushroom sauce', image: 'assets/image2.png', price: '$ 2.69', available: '11 Bowls available', id: 2 },
-    { name: 'Beef dumpling in hot and sour soup', image: 'assets/image3.png', price: '$ 2.99', available: '16 Bowls available', id: 3 },
-    { name: 'Healthy noodle with spinach leaf', image: 'assets/image6.png', price: '$ 3.29', available: '22 Bowls available', id: 4 },
-    { name: 'Hot spicy fried rice with omelet', image: 'assets/image6.png', price: '$ 3.49', available: '13 Bowls available', id: 5 },
-    { name: 'Spicy instant noodle with special omelette', image: 'assets/image5.png', price: '$ 3.59', available: '17 Bowls available', id: 6 },
+    {
+      name: 'Spicy seasoned seafood noodles',
+      image: 'assets/image4.png',
+      price: '$ 2.29',
+      available: '20 Bowls available',
+      id: 1,
+    },
+    {
+      name: 'Salted Pasta with mushroom sauce',
+      image: 'assets/image2.png',
+      price: '$ 2.69',
+      available: '11 Bowls available',
+      id: 2,
+    },
+    {
+      name: 'Beef dumpling in hot and sour soup',
+      image: 'assets/image3.png',
+      price: '$ 2.99',
+      available: '16 Bowls available',
+      id: 3,
+    },
+    {
+      name: 'Healthy noodle with spinach leaf',
+      image: 'assets/image6.png',
+      price: '$ 3.29',
+      available: '22 Bowls available',
+      id: 4,
+    },
+    {
+      name: 'Hot spicy fried rice with omelet',
+      image: 'assets/image6.png',
+      price: '$ 3.49',
+      available: '13 Bowls available',
+      id: 5,
+    },
+    {
+      name: 'Spicy instant noodle with special omelette',
+      image: 'assets/image5.png',
+      price: '$ 3.59',
+      available: '17 Bowls available',
+      id: 6,
+    },
   ];
 
   orderItems: OrderItem[] = [];
 
+  // Notification state
+  notification: {
+    message: string;
+    type: 'success' | 'error';
+    visible: boolean;
+  } = {
+    message: '',
+    type: 'success',
+    visible: false,
+  };
+
   constructor(private http: HttpClient) {}
+
+  showNotification(message: string, type: 'success' | 'error' = 'success') {
+    this.notification = { message, type, visible: true };
+    setTimeout(() => {
+      this.notification.visible = false;
+    }, 3000);
+  }
 
   get discount(): number {
     return 0;
   }
 
   get subTotal(): number {
-    return this.orderItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+    return this.orderItems.reduce(
+      (sum, item) => sum + item.price * item.quantity,
+      0,
+    );
   }
 
   selectCategory(cat: string) {
@@ -82,17 +146,22 @@ export class ModernMenuComponent {
   }
 
   addToOrder(item: MenuItem) {
-    const existing = this.orderItems.find(o => o.name.startsWith(item.name.substring(0, 18)));
+    const existing = this.orderItems.find((o) =>
+      o.name.startsWith(item.name.substring(0, 18)),
+    );
     if (existing) {
       existing.quantity++;
     } else {
       this.orderItems.push({
-        name: item.name.length > 20 ? item.name.substring(0, 20) + '...' : item.name,
+        name:
+          item.name.length > 20
+            ? item.name.substring(0, 20) + '...'
+            : item.name,
         image: item.image,
         price: parseFloat(item.price.replace('$ ', '')),
         quantity: 1,
         note: '',
-        id: item.id ?? this.itemIdCounter++
+        id: item.id ?? this.itemIdCounter++,
       });
     }
   }
@@ -105,31 +174,38 @@ export class ModernMenuComponent {
   }
 
   removeOrderItem(orderItem: OrderItem) {
-    this.orderItems = this.orderItems.filter(o => o !== orderItem);
+    this.orderItems = this.orderItems.filter((o) => o !== orderItem);
   }
 
   continueToPayment() {
     const payload: SubmitOrderPayload = {
       tableNumber: this.tableNumber,
-      items: this.orderItems.map((item, idx) => ({
+      items: this.orderItems.map((item) => ({
         name: item.name,
         quantity: item.quantity,
         price: item.price,
         icon: item.image,
-        id: item.id ?? idx + 1
-      }))
+        id: item.id,
+      })),
     };
 
     this.http.post('/orders', payload).subscribe({
       next: (response) => {
         console.log('Order submitted:', response);
-        alert('Order submitted successfully! Sub total: $' + this.subTotal.toFixed(2));
-        this.orderItems = [];
+        this.showNotification(
+          'Order submitted successfully! Sub total: $' +
+            this.subTotal.toFixed(2),
+          'success',
+        );
+        // this.orderItems = [];
       },
       error: (error) => {
         console.error('Failed to submit order:', error);
-        alert('Failed to submit order. Please try again.');
-      }
+        this.showNotification(
+          'Failed to submit order. Please try again.',
+          'error',
+        );
+      },
     });
   }
 }

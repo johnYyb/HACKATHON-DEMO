@@ -2,10 +2,9 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class MessageHandlerService {
-
   constructor(private router: Router) {}
 
   /**
@@ -42,5 +41,33 @@ export class MessageHandlerService {
           this.router.navigate([`/${route}`]);
         }
     }
+  }
+
+  handleRobotMessage(topic: string, message: string): void {
+    console.log(`Received robot message on topic ${topic}: ${message}`);
+    try {
+      const { t, ...rest } = JSON.parse(message);
+      switch (t) {
+        case '1109':
+          {
+            const {
+              m: { q, s },
+            } = rest;
+            console.log('received robot voice message:', q, s);
+          }
+          break;
+        case '1204':
+          {
+            const {
+              m: { ti, tn },
+            } = rest;
+            console.log('received robot get to position message:', ti, tn);
+          }
+          break;
+        default:
+          console.warn(`Unknown robot message type: ${t}`);
+          break;
+      }
+    } catch (error) {}
   }
 }

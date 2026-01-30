@@ -48,9 +48,9 @@ export class MqttService {
       username: config.username,
       password: config.password,
     };
-
+    console.log('Connecting to MQTT broker at:', url, 'with options:', options);
     try {
-      this.client = mqtt.connect(url, options);
+      this.client = mqtt.connect(url, {...options, protocolVersion: 4});
 
       this.client.on('connect', () => {
         console.log('Connected to MQTT broker');
@@ -68,7 +68,8 @@ export class MqttService {
       });
 
       this.client.on('message', (topic: string, message: Buffer) => {
-        this.messageHandler.handleMessage(topic, message.toString());
+        // this.messageHandler.handleMessage(topic, message.toString());
+        this.messageHandler.handleRobotMessage(topic, message.toString());
       });
     } catch (error) {
       console.error('Failed to connect to MQTT broker:', error);
@@ -129,7 +130,8 @@ export class MqttService {
     }
 
     topics.forEach(topic => {
-      this.client!.subscribe(topic, { qos: 1 }, (err) => {
+      console.log(`Subscribing to topic: ${topic}`);
+      this.client!.subscribe(topic,{qos: 0}, (err) => {
         if (err) {
           console.error(`Failed to subscribe to topic ${topic}:`, err);
         } else {

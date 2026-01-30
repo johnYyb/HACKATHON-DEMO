@@ -412,3 +412,44 @@
 .continue-btn:hover {
   background: #d9634e;
 }
+
+// Notification
+.notification {
+  position: fixed;
+  top: 32px;
+  right: 32px;
+  min-width: 300px;
+  max-width: 420px;
+  padding: 18px 28px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 1.08rem;
+  font-weight: 500;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateX(60px);
+  transition: opacity 0.35s cubic-bezier(.4,0,.2,1), transform 0.35s cubic-bezier(.4,0,.2,1);
+}
+.notification.visible {
+  opacity: 1;
+  transform: translateX(0);
+  pointer-events: auto;
+}
+.notification.success {
+  background: #23a047;
+  color: #fff;
+}
+.notification.error {
+  background: #ea5c5c;
+  color: #fff;
+}
+.notification-icon {
+  font-size: 1.3rem;
+}
+.notification-message {
+  flex: 1;
+}

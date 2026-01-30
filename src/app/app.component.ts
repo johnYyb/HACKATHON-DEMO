@@ -7,20 +7,20 @@ import { listener } from './shared/mqtt-robot';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit, OnDestroy {
   title = 'hackathon-demo';
   animatingPane: 'order' | 'pay' | 'other' | 'seating' | null = null;
-  
+
   constructor(
     public router: Router,
-    private mqttService: MqttService
+    private mqttService: MqttService,
   ) {}
 
   ngOnInit() {
     // this.connectToDemo();
-    // this.connectRobotMqtt();
+    this.connectRobotMqtt();
     // listener.startListening();
   }
 
@@ -56,7 +56,7 @@ export class AppComponent implements OnInit, OnDestroy {
       this.animatingPane = null;
     }, 400); // Animation duration
   }
-  
+
   paneNavigate(pane: 'order' | 'pay' | 'other' | 'seating') {
     this.triggerPaneAnimation(pane);
     setTimeout(() => {
@@ -64,8 +64,8 @@ export class AppComponent implements OnInit, OnDestroy {
     }, 200); // Start navigation after animation begins
   }
 
-  connectToDemo(){
-// Connect to MQTT broker with configuration
+  connectToDemo() {
+    // Connect to MQTT broker with configuration
     // Update the configuration to match your MQTT broker
     this.mqttService.connect({
       hostname: 'broker.emqx.io',
@@ -79,7 +79,7 @@ export class AppComponent implements OnInit, OnDestroy {
       username: 'emqx_test',
       password: 'emqx_test',
     });
-    
+
     // Subscribe to navigation topic after connection is established
     // Messages like "order", "pay", "other" will trigger navigation
     // Wait longer to ensure connection is established
@@ -111,17 +111,21 @@ export class AppComponent implements OnInit, OnDestroy {
       password: ROBOT_CONFIG.token,
       protocolVersion: 4,
     });
-    
+
     // Subscribe to robot topic after connection is established
     // Wait longer to ensure connection is established
     setTimeout(() => {
       if (this.mqttService.getConnectionStatus()) {
-        this.mqttService.subscribeToMultipleTopics(['robot-open/1919862081/pub/data', 'robot-topic/1919862081/sub']);
+        this.mqttService.subscribeToMultipleTopics([
+          'robot-open/1919862081/pub/data',
+        ]);
         console.log('✓ MQTT Service ready - listening for robot messages');
       } else {
         console.warn('MQTT not connected yet, retrying...');
         setTimeout(() => {
-          this.mqttService.subscribeToMultipleTopics(['robot-open/1919862081/pub/data', 'robot-topic/1919862081/sub']);
+          this.mqttService.subscribeToMultipleTopics([
+            'robot-open/1919862081/pub/data',
+          ]);
         }, 2000);
       }
     }, 2000);
