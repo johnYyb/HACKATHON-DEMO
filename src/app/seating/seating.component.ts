@@ -54,6 +54,10 @@ export class SeatingComponent implements OnInit, OnDestroy {
     // We store the interval id so it can be cleared when the component is destroyed
     this.startPolling();
 
+    setTimeout(() => {
+      this.confirmDetected();
+    }, 5000);
+
     // Subscribe to robot fi events emitted by MessageHandlerService (handles case 1108)
     // this.robotFiSub = this.messageHandler.robotFi$.subscribe((fi: any) => {
     //   const parsed = parseInt(fi as string, 10);
