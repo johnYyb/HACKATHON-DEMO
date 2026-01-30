@@ -1,4 +1,4 @@
-.left-pane, .right-top, .right-bottom {
+.left-pane, .right-top, .right-middle, .right-bottom {
 	cursor: pointer;
 }
 
@@ -34,6 +34,14 @@
 	justify-content: center;
 }
 
+.right-middle {
+	flex: 1;
+	background: linear-gradient(135deg, #43cea2 0%, #185a9d 100%);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
 .right-bottom {
 	flex: 1;
 	background: linear-gradient(135deg, #f857a6 0%, #ff5858 100%);
@@ -42,7 +50,7 @@
 	justify-content: center;
 }
 
-.order-btn, .pay-btn, .other-btn {
+.order-btn, .pay-btn, .other-btn, .seating-btn {
 	color: #fff;
 	font-size: 2rem;
 	font-weight: bold;
@@ -60,6 +68,7 @@
 // Remove hover/active effects
 .order-btn.active, .order-btn:hover,
 .pay-btn.active, .pay-btn:hover,
+.seating-btn.active, .seating-btn:hover,
 .other-btn.active, .other-btn:hover {
 	background: transparent;
 	box-shadow: none;
@@ -92,7 +101,7 @@
 		flex-direction: row;
 		height: 66.66vh;
 	}
-	.right-top, .right-bottom {
+	.right-top, .right-middle, .right-bottom {
 		flex: 1;
 		height: 100%;
 	}

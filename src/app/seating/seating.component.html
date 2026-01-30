@@ -1,0 +1,24 @@
+<div class="seating-container">
+  <div class="hero">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <h1 class="title">Restaurant Seating</h1>
+      <p class="subtitle">Select a table size and we'll guide the robot to that location.</p>
+    </div>
+  </div>
+
+  <div class="tables-grid" role="list">
+    <div class="table-card" *ngFor="let s of sizes" role="listitem">
+      <button class="table-btn" (click)="moveTo(s.key)" [disabled]="loading">
+        <span class="table-icon">🍽️</span>
+        <span class="table-label">{{ s.label }}</span>
+      </button>
+      <div class="table-capacity">{{ s.capacity }} seats</div>
+    </div>
+  </div>
+
+  <div class="status" aria-live="polite">
+    <div *ngIf="loading" class="loading">Sending command to robot...</div>
+    <div *ngIf="!loading && message" class="message">{{ message }}</div>
+  </div>
+</div>
