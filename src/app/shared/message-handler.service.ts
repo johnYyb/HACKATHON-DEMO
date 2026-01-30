@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { RobotControlService } from './robot-control.service';
 import { ROBOT_CONFIG } from './robot-config';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -10,6 +11,10 @@ export class MessageHandlerService {
   constructor(private router: Router, private robotControlService: RobotControlService) {}
 
   public isSubmitOrder = false;
+  // Collected m.fi values from robot messages of type 1108
+  private robotFiRecords: any[] = [];
+  // Emits each new fi value as it arrives
+  // public robotFi$ = new Subject<any>();
 
   /**
    * Handle incoming MQTT messages and navigate accordingly
@@ -32,6 +37,10 @@ export class MessageHandlerService {
         this.router.navigate(['/pay']);
         console.log('Navigating to /pay');
         break;
+      case 'seating':
+        this.router.navigate(['/seating']);
+        console.log('Navigating to /seating');
+        break;
       case 'other':
         this.router.navigate(['/other']);
         console.log('Navigating to /other');
@@ -49,9 +58,23 @@ export class MessageHandlerService {
 
   handleRobotMessage(topic: string, message: string): void {
     console.log(`Received robot message on topic ${topic}: ${message}`);
-    try {
+    try {``
       const { t, ...rest } = JSON.parse(message);
       switch (t) {
+        case '1108':
+          {
+            const {
+              m: {},
+              id: id,
+            } = rest;
+            console.log('received robot customer image:');
+            // store fi in records and emit to subscribers
+            if (id !== undefined && id !== null) {
+              this.robotFiRecords.push(id);
+              // try { this.robotFi$.next(id); } catch (e) { /* ignore emit errors */ }
+            }
+          }
+          break;
         case '1109':
           {
             const {
@@ -83,5 +106,15 @@ export class MessageHandlerService {
           break;
       }
     } catch (error) {}
+  }
+
+  /** Return a shallow copy of stored fi records */
+  getRobotFiRecords(): any[] {
+    return this.robotFiRecords.slice();
+  }
+
+  /** Clear stored fi records */
+  clearRobotFiRecords(): void {
+    this.robotFiRecords = [];
   }
 }

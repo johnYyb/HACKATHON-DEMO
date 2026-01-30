@@ -1,24 +1,29 @@
 <div class="seating-container">
-  <div class="hero">
-    <div class="hero-overlay"></div>
-    <div class="hero-content">
+  <div class="main-area">
+    <div class="main-center">
       <h1 class="title">Restaurant Seating</h1>
-      <p class="subtitle">Select a table size and we'll guide the robot to that location.</p>
+      <p class="subtitle">Select a table size below or use the camera-detected count.</p>
+
+      <div class="tables-grid" role="list">
+        <div class="table-card" *ngFor="let s of sizes" role="listitem">
+          <button class="table-btn" (click)="moveTo(s.key)" [disabled]="loading">
+            <img class="table-icon" src="/assets/icons/plate.svg" alt="table icon">
+            <span class="table-label">{{ s.label }}</span>
+          </button>
+          <div class="table-capacity">{{ s.capacity }} seats</div>
+        </div>
+      </div>
     </div>
   </div>
 
-  <div class="tables-grid" role="list">
-    <div class="table-card" *ngFor="let s of sizes" role="listitem">
-      <button class="table-btn" (click)="moveTo(s.key)" [disabled]="loading">
-        <img class="table-icon" src="/assets/icons/plate.svg" alt="table icon">
-        <span class="table-label">{{ s.label }}</span>
-      </button>
-      <div class="table-capacity">{{ s.capacity }} seats</div>
+  <div class="detection-panel">
+    <div class="detected-count">{{ recognizedCount === null ? 0 : recognizedCount }} Customers Recognized</div>
+    <div class="detection-actions">
+      <button class="confirm-btn" (click)="confirmDetected()" [disabled]="loading || recognizedCount === null">Confirm & Seat</button>
     </div>
-  </div>
-
-  <div class="status" aria-live="polite">
-    <div *ngIf="loading" class="loading">Sending command to robot...</div>
-    <div *ngIf="!loading && message" class="message">{{ message }}</div>
+    <div class="status" aria-live="polite">
+      <div *ngIf="loading" class="loading">Sending command to robot...</div>
+      <div *ngIf="!loading && message" class="message">{{ message }}</div>
+    </div>
   </div>
 </div>
