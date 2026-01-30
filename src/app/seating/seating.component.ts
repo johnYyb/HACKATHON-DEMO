@@ -185,7 +185,7 @@ export class SeatingComponent implements OnInit, OnDestroy {
       return;
     }
     // Call existing moveTo flow
-    this.moveTo(sizeKey);
+    // this.moveTo(sizeKey);
   }
 
   /**
