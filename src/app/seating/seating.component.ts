@@ -1,12 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
 import { SeatingService } from './seating.service';
+import { MessageHandlerService } from '../shared/message-handler.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-seating',
   templateUrl: './seating.component.html',
   styleUrls: ['./seating.component.scss']
 })
-export class SeatingComponent {
+export class SeatingComponent implements OnInit, OnDestroy {
   loading = false;
   message = '';
 
@@ -27,7 +29,40 @@ export class SeatingComponent {
     { key: '8-person', label: '8-person', capacity: 8 }
   ];
 
-  constructor(private seatingService: SeatingService) {}
+  // Detected customer count from robot camera (null = unknown)
+  recognizedCount: number | null = null;
+  // Subscription to robot fi observable
+  private robotFiSub: Subscription | null = null;
+
+  constructor(
+    private seatingService: SeatingService,
+    private messageHandler: MessageHandlerService,
+    private ngZone: NgZone
+  ) {}
+
+  ngOnInit(): void {
+     this.recognizedCount = this.messageHandler.getRobotFiRecords().length;;
+
+    // Subscribe to robot fi events emitted by MessageHandlerService (handles case 1108)
+    // this.robotFiSub = this.messageHandler.robotFi$.subscribe((fi: any) => {
+      // fi may be numeric or string; parse to integer
+      // const parsed = parseInt(fi as string, 10);
+      // if (!isNaN(parsed)) {
+      //   this.ngZone.run(() => {
+      //     this.recognizedCount = parsed;
+      //     this.message = `Detected ${parsed} customers`;
+      //   });
+      // }
+    // });
+  }
+
+  ngOnDestroy(): void {
+    // Unsubscribe from robotFi observable
+    // if (this.robotFiSub) {
+    //   this.robotFiSub.unsubscribe();
+    //   this.robotFiSub = null;
+    // }
+  }
 
   moveTo(sizeKey: string) {
     const targetPointId = this.targetMap[sizeKey];
@@ -49,5 +84,33 @@ export class SeatingComponent {
         const errMsg = err?.response?.data || err?.message || err;
         this.message = 'Error commanding robot: ' + JSON.stringify(errMsg);
       });
+  }
+
+  /**
+   * Confirm the detected count and trigger moveTo for the appropriate table size.
+   */
+  confirmDetected() {
+    if (this.recognizedCount === null) {
+      this.message = 'No detected customer count to confirm.';
+      return;
+    }
+    const sizeKey = this.chooseSizeKeyForCount(this.recognizedCount);
+    if (!sizeKey) {
+      this.message = 'No suitable table size found for count ' + this.recognizedCount;
+      return;
+    }
+    // Call existing moveTo flow
+    this.moveTo(sizeKey);
+  }
+
+  /**
+   * Choose an appropriate sizeKey based on numeric count.
+   */
+  chooseSizeKeyForCount(count: number): string | null {
+    if (count <= 2) return '2-person';
+    if (count <= 4) return '4-person';
+    if (count <= 6) return '6-person';
+    if (count <= 8) return '8-person';
+    return '8-person';
   }
 }
