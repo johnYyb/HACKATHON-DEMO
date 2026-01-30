@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { RobotControlService } from '../shared/robot-control.service';
+import { ROBOT_CONFIG } from '../shared/robot-config';
+import { MessageHandlerService } from '../shared/message-handler.service';
 
 interface MenuItem {
   name: string;
@@ -117,7 +120,11 @@ export class ModernMenuComponent {
     visible: false,
   };
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private robotControlService: RobotControlService,
+    private messageHandlerService: MessageHandlerService,
+  ) {}
 
   showNotification(message: string, type: 'success' | 'error' = 'success') {
     this.notification = { message, type, visible: true };
@@ -188,6 +195,22 @@ export class ModernMenuComponent {
         id: item.id,
       })),
     };
+
+    this.robotControlService
+      .speak(
+        ROBOT_CONFIG.serialNumber,
+        'Got it. I will contact the kitchen. Your dishes will be out in 10 minutes. Thanks for your patience.',
+      )
+      .subscribe({
+        next: (response) => {
+          console.log('说话完成:', response);
+        },
+        error: (error) => {
+          console.log('说话失败:', error);
+        },
+      });
+    // mark order submitted for robot logic
+    this.messageHandlerService.isSubmitOrder = true;
 
     this.http.post('/orders', payload).subscribe({
       next: (response) => {

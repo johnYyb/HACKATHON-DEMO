@@ -1,11 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { RobotControlService } from './robot-control.service';
+import { ROBOT_CONFIG } from './robot-config';
 
 @Injectable({
   providedIn: 'root',
 })
 export class MessageHandlerService {
-  constructor(private router: Router) {}
+  constructor(private router: Router, private robotControlService: RobotControlService) {}
+
+  public isSubmitOrder = false;
 
   /**
    * Handle incoming MQTT messages and navigate accordingly
@@ -62,6 +66,16 @@ export class MessageHandlerService {
               m: { ti, tn },
             } = rest;
             console.log('received robot get to position message:', ti, tn);
+            if(tn === ROBOT_CONFIG.pointB && this.isSubmitOrder){ // 假设pointB是用餐区
+              this.robotControlService.speak(ROBOT_CONFIG.serialNumber, `Here are your dishes. Enjoy your meal. Let me know if you need anything else.`).subscribe({
+                next: (response) => {
+                  console.log('Arrived speech completed:', response);
+                },
+                error: (error) => {
+                  console.log('Arrived speech failed:', error);
+                }
+              });
+            }
           }
           break;
         default:
