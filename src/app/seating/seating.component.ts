@@ -94,8 +94,8 @@ export class SeatingComponent implements OnInit, OnDestroy {
     if (this.pollIntervalId != null) return; // already polling
     this.pollIntervalId = window.setInterval(() => {
       // read the number of stored fi records and update recognizedCount
-      // this.recognizedCount = this.messageHandler.getRobotFiRecords().length;
-      this.recognizedCount = 1;
+      this.recognizedCount = this.messageHandler.getRobotFiRecords().length;
+      // this.recognizedCount = 1;
       if (this.recognizedCount > 0) {
         this.robotControl
           .speak(
