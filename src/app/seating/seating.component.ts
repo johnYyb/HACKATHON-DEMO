@@ -90,7 +90,7 @@ export class SeatingComponent implements OnInit, OnDestroy {
     this.pollIntervalId = window.setInterval(() => {
       // read the number of stored fi records and update recognizedCount
       this.recognizedCount = this.messageHandler.getRobotFiRecords().length;
-      if (this.recognizedCount > 4) {
+      if (this.recognizedCount >= 2) {
         this.robotControl
           .speak(
             ROBOT_CONFIG.serialNumber,

@@ -26,10 +26,10 @@ export interface RobotConfig {
 }
 
 export const ROBOT_CONFIG: RobotConfig = {
-  mapId: '05dcfb4937f23f2f4fdf66b9e89687c5',
+  mapId: '545faa1195abc7496122bdcca490786a',
   homePointId: '1',
   kitchenPointId: '2f91db2a7ef24be49b111da4f2ce7ac7',
-  diningAreaPointId: '64d83ad00fd848c1b4192527e8a26ca0',
+  diningAreaPointId: 'eb9a0f72e4e042ed8f41c4c17c7d8349',
   waitingAreaPointId: '4',
   pointA: 'A',
   pointB: 'B',

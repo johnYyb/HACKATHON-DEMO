@@ -209,6 +209,17 @@ export class ModernMenuComponent {
           console.log('说话失败:', error);
         },
       });
+    
+    setTimeout(()=>{
+      this.robotControlService.moveToTargetPoint(ROBOT_CONFIG.serialNumber, ROBOT_CONFIG.mapId, '5cde7737cd8447d48f9d45ce3096217c').subscribe({
+      next: (response) => {
+        console.log('机器人前往厨房:', response);
+      },
+      error: (error) => {
+        console.log('机器人前往厨房失败:', error);
+      },
+    });
+    }, 5000);
     // mark order submitted for robot logic
     this.messageHandlerService.isSubmitOrder = true;
 

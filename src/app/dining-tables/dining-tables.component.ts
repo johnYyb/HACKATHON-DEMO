@@ -26,7 +26,7 @@ export class DiningTablesComponent {
     const tableNumber = tableIndex + 1;
     const mapId = ROBOT_CONFIG.mapId;
     const pointArray = [
-      ROBOT_CONFIG.pointA,
+      ROBOT_CONFIG.diningAreaPointId,
       ROBOT_CONFIG.pointB,
       ROBOT_CONFIG.pointC,
     ];
