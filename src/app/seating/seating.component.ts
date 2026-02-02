@@ -38,6 +38,9 @@ export class SeatingComponent implements OnInit, OnDestroy {
   private robotFiSub: Subscription | null = null;
   // Interval id used for polling stored records (if polling approach is used)
   private pollIntervalId: number | null = null;
+  customerDetected: boolean = false;
+  highlightTable: boolean = false;
+  toTable: boolean = false;
 
   getRecognizedCount(): number {
     return this.recognizedCount;
@@ -86,26 +89,64 @@ export class SeatingComponent implements OnInit, OnDestroy {
 
   /** Start polling stored records every second. */
   startPolling(intervalMs: number = 100) {
+    this.highlightTable = false;
+    this.toTable = false;
     if (this.pollIntervalId != null) return; // already polling
     this.pollIntervalId = window.setInterval(() => {
       // read the number of stored fi records and update recognizedCount
-      this.recognizedCount = this.messageHandler.getRobotFiRecords().length;
-      if (this.recognizedCount >= 2) {
+      // this.recognizedCount = this.messageHandler.getRobotFiRecords().length;
+      this.recognizedCount = 1;
+      if (this.recognizedCount > 0) {
         this.robotControl
           .speak(
             ROBOT_CONFIG.serialNumber,
-            `Welcome! Please follow me to your table.`,
+            `Welcome! How many of you are there?`,
           )
           .subscribe({
             next: (response) => {},
             error: (error) => {},
           });
         this.stopPolling();
+
+
         setTimeout(() => {
-          this.moveTo('4-person');
-        }, 1000);
+                  // 我们是4个人
+        this.highlightTable = true;
+             this.robotControl
+            .speak(
+              ROBOT_CONFIG.serialNumber,
+              `Okay, please follow me to your table.`,
+            )
+            .subscribe({
+              next: (response) => {},
+              error: (error) => {},
+            });
+            this.toTable = true;
+            this.moveTo('4-person');
+        }, 3000);
+
+
+        // setTimeout(() => {
+        //   this.moveTo('4-person');
+        // }, 1000);
       }
     }, intervalMs) as unknown as number;
+    //   if (this.recognizedCount >= 2) {
+    //     this.robotControl
+    //       .speak(
+    //         ROBOT_CONFIG.serialNumber,
+    //         `Welcome! Please follow me to your table.`,
+    //       )
+    //       .subscribe({
+    //         next: (response) => {},
+    //         error: (error) => {},
+    //       });
+    //     this.stopPolling();
+    //     setTimeout(() => {
+    //       this.moveTo('4-person');
+    //     }, 1000);
+    //   }
+    // }, intervalMs) as unknown as number;
   }
 
   /** Stop the polling interval if running. */
@@ -147,7 +188,7 @@ export class SeatingComponent implements OnInit, OnDestroy {
 
     setTimeout(() => {
       this.router.navigate(['/order']);
-    }, 3000);
+    }, 4000);
 
     // const targetPointId = this.targetMap[sizeKey];
     // if (!targetPointId) {
