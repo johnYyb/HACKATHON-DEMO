@@ -35,8 +35,8 @@ export const ROBOT_CONFIG: RobotConfig = {
   pointB: 'B',
   pointC: 'C',
   // Add more config keys as needed
-  appkey: '',
-  apptoken: '',
+  appkey: '2e9ecb3d0c514eec920916fa1d0503a7',
+  apptoken: 'mo19OkoGQ539BFf0',
   BASE_URL: 'http://s.padbot.cn:9080/',
   MOVE_URL:
     '/cloud/openapinav/controlRobotMoveToTargetPoint.action',
